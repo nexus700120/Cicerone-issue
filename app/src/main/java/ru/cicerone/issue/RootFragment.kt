@@ -7,9 +7,15 @@ import android.view.View
 import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
+import com.github.terrakok.cicerone.Cicerone
+import com.github.terrakok.cicerone.Screen
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class RootFragment : Fragment(R.layout.fragment_root) {
+
+    private val cicerone = Cicerone.create()
 
     private lateinit var bottomMenu: BottomNavigationView
 
@@ -34,6 +40,8 @@ class RootFragment : Fragment(R.layout.fragment_root) {
         val colorStateList = createColorStateList(color)
         bottomMenu.itemIconTintList = colorStateList
         bottomMenu.itemTextColor = colorStateList
+
+        cicerone.router.replaceScreen(FragmentScreen { TabFragment.instance(menuItemId) })
     }
 
     private fun createColorStateList(@ColorRes res: Int): ColorStateList =
@@ -47,4 +55,20 @@ class RootFragment : Fragment(R.layout.fragment_root) {
                 Color.LTGRAY
             )
         )
+
+    override fun onResume() {
+        super.onResume()
+        cicerone.getNavigatorHolder().setNavigator(
+            CustomAppNavigator(
+                requireActivity(),
+                R.id.tab_container,
+                childFragmentManager
+            )
+        )
+    }
+
+    override fun onPause() {
+        cicerone.getNavigatorHolder().removeNavigator()
+        super.onPause()
+    }
 }
