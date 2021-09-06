@@ -8,7 +8,6 @@ import androidx.annotation.IdRes
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 
 class TabFragment : Fragment(R.layout.fragment_tab) {
@@ -58,13 +57,7 @@ class TabFragment : Fragment(R.layout.fragment_tab) {
 
     override fun onResume() {
         super.onResume()
-        cicerone.getNavigatorHolder().setNavigator(
-            CustomAppNavigator(
-                requireActivity(),
-                R.id.content_container,
-                childFragmentManager
-            )
-        )
+        cicerone.getNavigatorHolder().setNavigator(Navigator(R.id.content_container, this))
     }
 
     override fun onPause() {

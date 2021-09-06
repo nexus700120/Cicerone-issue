@@ -8,8 +8,6 @@ import androidx.annotation.ColorRes
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import com.github.terrakok.cicerone.Cicerone
-import com.github.terrakok.cicerone.Screen
-import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.github.terrakok.cicerone.androidx.FragmentScreen
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
@@ -58,13 +56,7 @@ class RootFragment : Fragment(R.layout.fragment_root) {
 
     override fun onResume() {
         super.onResume()
-        cicerone.getNavigatorHolder().setNavigator(
-            CustomAppNavigator(
-                requireActivity(),
-                R.id.tab_container,
-                childFragmentManager
-            )
-        )
+        cicerone.getNavigatorHolder().setNavigator(Navigator(R.id.tab_container, this))
     }
 
     override fun onPause() {
